@@ -7,6 +7,7 @@ module.exports = {
   description: "looking for game command",
   execute(message, args) {
     stack[args[0]].stack = [];
+    console.log(message.channel.id)
     message.channel.send(
       `A ${stack[args[0]].name} queue request has started. React to the msg above to secure a spot`
     );
@@ -33,12 +34,13 @@ module.exports = {
         message.reply("Since you requested to queue, you've already been included in the q count")
         return
       }
-      message.channel.send(`Collected response from ${user.tag}`);
-      stack[args[0]].stack.push(user.id);
       if (stack[args[0]].stack.includes(user.id)) {
-        message.reply("You've already secured your spot!")
+        message.channel.send(`<@${user.id}>, you've already secured your spot!`)
         return
       }
+      message.channel.send(`Collected response from ${user.tag}`);
+      stack[args[0]].stack.push(user.id);
+      
       if (stack[args[0]].stackSize - stack[args[0]].stack.length + 1 > 0) {
         message.channel.send(`There are ${stack[args[0]].stackSize - stack[args[0]].stack.length + 1} spots remaining`);
       } else {

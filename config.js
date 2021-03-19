@@ -1,3 +1,4 @@
 module.exports = {
-  prefix: "q"
+  prefix: "q",
+  "lfg-channel": ""
 }
