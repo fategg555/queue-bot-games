@@ -6,10 +6,10 @@ module.exports = {
     message.react("✅")
     
     const filter = (reaction, user) => {
-	    return ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
+	    return ['✅'].includes(reaction.emoji.name);
     };
     
-    const collector = message.createReactionCollector(filter, { time: 15000 });
+    const collector = message.createReactionCollector(filter, {max: 3});
 
 collector.on('collect', (reaction, user) => {
 	message.reply(`Collected ${reaction.emoji.name} from ${user.tag}`);
