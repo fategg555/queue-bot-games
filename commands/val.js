@@ -1,4 +1,4 @@
-let stack = require("../utils/data.js")
+const database = require("./../database.js")
 
 module.exports = {
 	name: "val",
