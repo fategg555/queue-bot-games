@@ -9,9 +9,10 @@ module.exports = {
 	    return ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
     };
     
-    message.awaitReactions(filter, { max: 5 })
+    message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 	.then(collected => {
-    console.log(collected)
+		const reaction = collected.first();
+    console.log(reaction)
 	})
 	.catch(collected => {
 		message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
