@@ -18,11 +18,12 @@ const {prefix} = require("./config.js")
 
 
 
-client.on('ready', () => {
+client.once('ready', () => {
   console.log("ready!")
 })
 
 for (const file of commandFiles) {
+  console.log(file)
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
@@ -31,8 +32,13 @@ client.on("message", msg => {
   if (!msg.content.startsWith(prefix) || msg.author.bot) return;
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
-  if (command == "ping") {
-    client.commands.get('ping').execute(msg, args)
+  if (!client.commands.has(command)) return;
+
+  try {
+	  client.commands.get(command).execute(msg, args);
+  } catch (error) {
+	  console.error(error);
+	  msg.reply('there was an error trying to execute that command!');
   }
 })
 
