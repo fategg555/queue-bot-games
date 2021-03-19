@@ -13,7 +13,7 @@ client.commands = new Discord.Collection()
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const {prefix} = require("./config.js")
+const config= require("./config.js")
 
 
 
@@ -27,8 +27,12 @@ for (const file of commandFiles) {
 }
 
 client.on("message", msg => {
-  if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-  const args = msg.content.slice(prefix.length).trim().split(/ +/);
+  if (!msg.content.startsWith(config.prefix) || msg.author.bot) return;
+  if(msg.channel.id !== config["lfg-channel"]) {
+    msg.channel.send("This message is outside of the LFG channel. Either set an LFG channel with qset <channel> or type in commands in the LFG channel")
+    return
+  }
+  const args = msg.content.slice(config.prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
   if (!client.commands.has(command)) return;
 
