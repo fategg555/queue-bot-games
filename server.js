@@ -20,7 +20,7 @@ client.on("message", msg => {
   if (!msg.content.startsWith(prefix) || msg.author.bot) return;
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
-  console.log(command)
+  
 })
 
 // our default array of dreams
