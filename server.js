@@ -6,8 +6,14 @@
 const express = require("express");
 const app = express();
 
+const fs = require('fs')
+
 const Discord = require('discord.js');
 const client = new Discord.Client()
+client.commands = new Discord.Collection()
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
 const {prefix} = require("./config.js")
 
 
@@ -16,11 +22,18 @@ client.on('ready', () => {
   console.log("ready!")
 })
 
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
 client.on("message", msg => {
   if (!msg.content.startsWith(prefix) || msg.author.bot) return;
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
-  
+  if (command == "ping") {
+    client.commands.get('ping').execute(msg, args)
+  }
 })
 
 // our default array of dreams
@@ -30,11 +43,74 @@ const dreams = [
   "Wash the dishes"
 ];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // make all the files in 'public' available
 // https://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
-// https://expressjs.com/en/starter/basic-routing.html
+// // https://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
