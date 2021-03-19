@@ -12,6 +12,7 @@ module.exports = {
     );
     let people = "";
     for (let personID of stack[args[0]].players) {
+      console.log(personID)
       people += `<@${personID}>\n`;
     }
     console.log(people)
@@ -34,13 +35,16 @@ module.exports = {
       }
       message.channel.send(`Collected response from ${user.tag}`);
       stack[args[0]].stack.push(user.id);
-      
+      if (stack[args[0]].stack.includes(user.id)) {
+        message.reply("You've already secured your spot!")
+        return
+      }
       if (stack[args[0]].stackSize - stack[args[0]].stack.length + 1 > 0) {
         message.channel.send(`There are ${stack[args[0]].stackSize - stack[args[0]].stack.length + 1} spots remaining`);
       } else {
         let string = "";
         message.channel.send("There are no more spots remaining!");
-        for (let id of stack.stack) {
+        for (let id of stack[args[0]].stack) {
           string += `<@${id}> \n`;
         }
         message.channel.send(
