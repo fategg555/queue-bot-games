@@ -23,7 +23,6 @@ client.once('ready', () => {
 })
 
 for (const file of commandFiles) {
-  console.log(file)
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
