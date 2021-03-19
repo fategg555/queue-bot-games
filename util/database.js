@@ -1,6 +1,6 @@
 const fs = require('fs')
-const dbfile = __dirname + "/data.json"
-const dbTempFile = __dirname + "/data.json"
+const dbfile = __dirname + "./../info.json"
+const dbTempFile = __dirname + "/info.json"
 
 
 const write = (content) => {
