@@ -18,9 +18,19 @@ module.exports = {
     const collector = message.createReactionCollector(filter, {max: 6});
 
 collector.on('collect', (reaction, user) => {
-	message.channel.send(`Collected response ${reaction.emoji.name} from ${user.tag}`);
-  console.log(stack.stack)
-  console.log(message.author.bot)
+	message.channel.send(`Collected response from ${user.tag}`);
+  stack.stack.push(user.id)
+  if (stack.stackSize - stack.stack.length + 1 > 0) {
+    message.channel.send(`There are ${stack.stackSize - stack.stack.length + 1} spots remaining`)
+  } else {
+    let string = ""
+    message.channel.send("There are no more spots remaining!")
+    for (let id in stack.stack) {
+      string += `<@${id}> \n`
+    }
+    console.log(string)
+  }
+  
 });
 
 collector.on('end', collected => {
