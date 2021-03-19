@@ -2,8 +2,6 @@ const database = require("./../util/database.js")
 
 let stack = database.read();
 
-console.log(stack)
-
 module.exports = {
 	name: "val",
 	description: 'looking for game command',
