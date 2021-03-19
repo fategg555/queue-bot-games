@@ -1,9 +1,4 @@
-let guildInfo = {
+{
+  "stack" : []
   
 }
-
-let stack = {
- people: ["daniel"] 
-}
-
-module.exports = {stack: stack}

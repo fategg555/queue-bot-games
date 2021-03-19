@@ -3,18 +3,18 @@ const dbfile = __dirname + "/data.json"
 const dbTempFile = __dirname + "/data.json"
 
 
-const write = (file, content) => {
-  fs.writeFile(file, JSON.stringify(content), (err) => {if (err) console.log(err)})
+const write = (content) => {
+  fs.writeFile(dbfile, JSON.stringify(content), (err) => {if (err) console.log(err)})
 }
 
-const read = (file) => {
-  let raw = fs.readFileSync(file)
+const read = () => {
+  let raw = fs.readFileSync(dbfile)
   let parsed = JSON.parse(raw)
   return parsed
 }
 
-const readPlainText = (file) => {
-  return fs.readFileSync(file).toString()
+const readPlainText = () => {
+  return fs.readFileSync(dbfile).toString()
 }
 
 module.exports = {write, read, readPlainText}

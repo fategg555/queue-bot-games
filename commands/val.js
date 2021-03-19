@@ -1,4 +1,8 @@
-const database = require("./../database.js")
+const database = require("./../util/database.js")
+
+let stack = database.read();
+
+console.log(stack)
 
 module.exports = {
 	name: "val",
@@ -8,13 +12,13 @@ module.exports = {
     message.react("✅")
     
     const filter = (reaction, user) => {
-	    return ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
+	    return ['✅'].includes(reaction.emoji.name);
     };
     
     const collector = message.createReactionCollector(filter, {max: 6});
 
 collector.on('collect', (reaction, user) => {
-	message.reply(`Collected ${reaction.emoji.name} from <@${user.id}>`);
+	message.channel.send(`Collected response ${reaction.emoji.name} from ${user.id}`);
   console.log(message.author.bot)
 });
 
