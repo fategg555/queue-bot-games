@@ -8,6 +8,7 @@ const app = express();
 
 const Discord = require('discord.js');
 const client = new Discord.Client()
+const {prefix} = require("./config.js")
 
 
 
@@ -16,9 +17,10 @@ client.on('ready', () => {
 })
 
 client.on("message", msg => {
-  if (msg.content == "hello") {
-    msg.reply("hello")
-  }
+  if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+  const args = msg.content.slice(prefix.length).trim().split(/ +/);
+	const command = args.shift().toLowerCase();
+  console.log(command)
 })
 
 // our default array of dreams
