@@ -9,11 +9,14 @@ module.exports = {
 	    return ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
     };
     
-    message.awaitReactions(filter, {max: 1, time: 12000}).then(collected => {
-      const reaction = collected.first();
-      console.log(reaction.users.cache)
-    }).catch(() => {
-      message.reply("make another queue request")
-    })
+    message.awaitReactions(filter, { max: 5 })
+	.then(collected => {
+    console.log(collected)
+	})
+	.catch(collected => {
+		message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
+	});
+    
+
 	},
 };
