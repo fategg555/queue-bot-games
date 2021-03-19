@@ -28,7 +28,7 @@ collector.on('collect', (reaction, user) => {
     for (let id of stack.stack) {
       string += `<@${id}> \n`
     }
-    message.channel.send(`The final q for the stack is ${string} \nThere will be more opportunities to queue in the future or you can start your own queue`)
+    message.channel.send(`The final q for the stack is \n ${string} \nThere will be more opportunities to queue in the future or you can start your own queue`)
   }
   
 });
