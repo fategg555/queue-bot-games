@@ -1,5 +1,6 @@
+const channel = require("./commands/set.js")
+
 module.exports = {
   prefix: "q",
-  "lfg-channel": "",
-  "lfg": ""
+  "lfg-channel": channel.channel
 }
