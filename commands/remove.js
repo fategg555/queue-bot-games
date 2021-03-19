@@ -4,7 +4,7 @@ let data = database.read();
 
 module.exports = {
 	name: "remove",
-	description: 'add yourself to list of people for specific game queues',
+	description: 'remove yourself from the list of people for specific game queues',
 	execute(message, args) {
     let game  = args[0]
     if(data[game].includes(message.author.id)) {
