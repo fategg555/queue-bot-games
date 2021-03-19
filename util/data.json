@@ -1,5 +1,7 @@
 {
   "stack" : [],
-  "stackSize": 2
-  
+  "stackSize": 5,
+  "val": [],
+  "cs": [],
+  "ttt": []
 }

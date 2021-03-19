@@ -15,7 +15,7 @@ module.exports = {
 	    return ['✅'].includes(reaction.emoji.name);
     };
     
-    const collector = message.createReactionCollector(filter, {max: 6});
+    const collector = message.createReactionCollector(filter, {max: stack.stackSize + 1});
 
 collector.on('collect', (reaction, user) => {
 	message.channel.send(`Collected response from ${user.tag}`);
@@ -25,10 +25,10 @@ collector.on('collect', (reaction, user) => {
   } else {
     let string = ""
     message.channel.send("There are no more spots remaining!")
-    for (let id in stack.stack) {
+    for (let id of stack.stack) {
       string += `<@${id}> \n`
     }
-    console.log(string)
+    message.channel.send(`The final q for the stack is ${string} \nThere will be more opportunities to queue in the future or you can start your own queue`)
   }
   
 });
