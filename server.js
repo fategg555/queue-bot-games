@@ -6,6 +6,15 @@
 const express = require("express");
 const app = express();
 
+const Discord = require('discord.js');
+const client = new Discord.Client()
+client.login(process.env.BOT_TOKEN)
+
+
+client.on('ready', () => {
+  console.log("ready!")
+})
+
 // our default array of dreams
 const dreams = [
   "Find and count some sheep",
