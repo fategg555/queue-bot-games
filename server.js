@@ -8,11 +8,17 @@ const app = express();
 
 const Discord = require('discord.js');
 const client = new Discord.Client()
-client.login(process.env.BOT_TOKEN)
+
 
 
 client.on('ready', () => {
   console.log("ready!")
+})
+
+client.on("message", msg => {
+  if (msg.content == "hello") {
+    msg.reply("hello")
+  }
 })
 
 // our default array of dreams
@@ -37,6 +43,7 @@ app.get("/dreams", (request, response) => {
   response.json(dreams);
 });
 
+client.login(process.env.BOT_TOKEN)
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
