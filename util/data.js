@@ -3,5 +3,7 @@ let guildInfo = {
 }
 
 let stack = {
- stack: [] 
+ people: ["daniel"] 
 }
+
+module.exports = {stack: stack}

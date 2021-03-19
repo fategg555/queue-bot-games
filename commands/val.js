@@ -1,6 +1,4 @@
-let stack = require('/util/data.js')
-
-console.log(stack)
+let stack = require("../utils/data.js")
 
 module.exports = {
 	name: "val",
@@ -13,7 +11,7 @@ module.exports = {
 	    return ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
     };
     
-    const collector = message.createReactionCollector(filter, {max: 3});
+    const collector = message.createReactionCollector(filter, {max: 6});
 
 collector.on('collect', (reaction, user) => {
 	message.reply(`Collected ${reaction.emoji.name} from <@${user.id}>`);
