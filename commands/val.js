@@ -18,7 +18,9 @@ module.exports = {
     const collector = message.createReactionCollector(filter, {max: 6});
 
 collector.on('collect', (reaction, user) => {
-	message.channel.send(`Collected response ${reaction.emoji.name} from ${user.id}`);
+	message.channel.send(`Collected response ${reaction.emoji.name} from ${user.tag}`);
+  console.log(user.username)
+  console.log(stack)
   console.log(message.author.bot)
 });
 
