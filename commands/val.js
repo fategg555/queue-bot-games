@@ -3,19 +3,20 @@ const database = require("./../util/database.js");
 let stack = database.read();
 
 module.exports = {
-  name: "val",
+  name: "q",
   description: "looking for game command",
   execute(message, args) {
-    stack.val.stack = [];
+    stack[args[0]].stack = [];
     message.channel.send(
-      "A Valorant queue request has started. React to the msg above to secure a spot"
+      `A ${stack[args[0]].name} queue request has started. React to the msg above to secure a spot`
     );
     let people = "";
-    for (let personID of stack.val.players) {
+    for (let personID of stack[args[0]].players) {
       people += `<@${personID}>\n`;
     }
+    console.log(people)
     message.channel.send(people);
-    stack.val.stack.push(message.author.id);
+    stack[args[0]].stack.push(message.author.id);
     message.react("✅");
 
     const filter = (reaction, user) => {
@@ -23,7 +24,7 @@ module.exports = {
     };
 
     const collector = message.createReactionCollector(filter, {
-      max: stack.val.stackSize
+      max: stack[args[0]].stackSize
     });
 
     collector.on("collect", (reaction, user) => {
@@ -32,10 +33,10 @@ module.exports = {
         return
       }
       message.channel.send(`Collected response from ${user.tag}`);
-      stack.val.stack.push(user.id);
+      stack[args[0]].stack.push(user.id);
       
-      if (stack.val.stackSize - stack.val.stack.length + 1 > 0) {
-        message.channel.send(`There are ${stack.val.stackSize - stack.val.stack.length + 1} spots remaining`);
+      if (stack[args[0]].stackSize - stack[args[0]].stack.length + 1 > 0) {
+        message.channel.send(`There are ${stack[args[0]].stackSize - stack[args[0]].stack.length + 1} spots remaining`);
       } else {
         let string = "";
         message.channel.send("There are no more spots remaining!");
