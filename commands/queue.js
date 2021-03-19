@@ -7,7 +7,7 @@ module.exports = {
   description: "looking for game command",
   execute(message, args) {
     stack[args[0]].stack = [];
-    console.log(message.channel.id)
+    console.log(message.channel)
     message.channel.send(
       `A ${stack[args[0]].name} queue request has started. React to the msg above to secure a spot`
     );
