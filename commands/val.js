@@ -19,13 +19,13 @@ module.exports = {
 	    return ['✅'].includes(reaction.emoji.name);
     };
     
-    const collector = message.createReactionCollector(filter, {max: stack.stackSize + 1});
+    const collector = message.createReactionCollector(filter, {max: stack.val.stackSize + 1});
 
 collector.on('collect', (reaction, user) => {
 	message.channel.send(`Collected response from ${user.tag}`);
-  stack.stack.push(user.id)
-  if (stack.stackSize - stack.stack.length + 1 > 0) {
-    message.channel.send(`There are ${stack.stackSize - stack.stack.length + 1} spots remaining`)
+  stack.val.stack.push(user.id)
+  if (stack.val.stackSize - stack.val.stack.length + 1 > 0) {
+    message.channel.send(`There are ${stack.val.stackSize - stack.val.stack.length + 1} spots remaining`)
   } else {
     let string = ""
     message.channel.send("There are no more spots remaining!")
@@ -35,11 +35,6 @@ collector.on('collect', (reaction, user) => {
     message.channel.send(`The final q for the stack is \n${string} \nThere will be more opportunities to queue in the future or you can start your own queue`)
   }
 });
-
-collector.on('end', collected => {
-	console.log(`Collected ${collected.size} items`);
-});
     
-
 	},
 };
