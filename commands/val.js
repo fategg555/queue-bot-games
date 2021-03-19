@@ -9,14 +9,15 @@ module.exports = {
 	    return ['✅'].includes(reaction.emoji.name) && user.id === message.author.id;
     };
     
-    message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-	.then(collected => {
-		const reaction = collected.first();
-    console.log(reaction)
-	})
-	.catch(collected => {
-		message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
-	});
+    const collector = message.createReactionCollector(filter, { time: 15000 });
+
+collector.on('collect', (reaction, user) => {
+	message.reply(`Collected ${reaction.emoji.name} from ${user.tag}`);
+});
+
+collector.on('end', collected => {
+	console.log(`Collected ${collected.size} items`);
+});
     
 
 	},
