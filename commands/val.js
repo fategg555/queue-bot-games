@@ -6,10 +6,10 @@ module.exports = {
 	name: "val",
 	description: 'looking for game command',
 	execute(message, args) {
-    stack.stack = []
+    stack.val.stack = []
 		message.channel.send('A Valorant queue request has started. React to the msg above to secure a spot');
     let people = ""
-    for (let personID of stack.val) {
+    for (let personID of stack.val.players) {
       people += `<@${personID}>\n`
     }
     message.channel.send(people)
