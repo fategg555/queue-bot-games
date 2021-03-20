@@ -6,6 +6,11 @@ module.exports = {
 	name: "game",
 	description: 'remove yourself from the list of people for specific game queues',
 	execute(message, args) {
+    if("<#"+message.channel.id+">" !== data[message.guild.id]["lfg"]) {
+      console.log("<#"+message.channel.id+">", data[message.guild.id]["lfg"])
+      message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
+      return
+    }
     if (args.length !== 3) {
       message.reply("you don't have the right number of arguments. Make sure there are 3 arguments and they are in the order of string, integer, string.")
       return

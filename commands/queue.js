@@ -6,6 +6,7 @@ module.exports = {
   name: "q",
   description: "looking for game command",
   execute(message, args) {
+    console.log(stack, message.guild.id)
    console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"]) 
     if("<#"+message.channel.id+">" !== stack[message.guild.id]["lfg"]) {
       console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"])
@@ -28,7 +29,7 @@ module.exports = {
     message.react("✅");
 
     const filter = (reaction, user) => {
-      return ["✅"].includes(reaction.emoji.name);
+      return ["✅"].includes(reaction.emoji.name); 
     };
 
     const collector = message.createReactionCollector(filter, {
