@@ -7,7 +7,7 @@ module.exports = {
 	description: 'add yourself to list of people for specific game queues',
 	execute(message, args) {
     let game  = args[0]
-    if(data[game].players.includes(message.author.id)) {
+    if(data[message.guild.id][game].players.includes(message.author.id)) {
       message.reply(`You've already joined the ping list for the **${data[args[0]].name}** queue.`)
       return;
     }
