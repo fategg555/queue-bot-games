@@ -8,7 +8,7 @@ module.exports = {
 	execute(message, args) {
     let game  = args[0]
     if(data[game].players.includes(message.author.id)) {
-      message.reply(`You've already joined the ping list for the ${game} queue.`)
+      message.reply(`You've already joined the ping list for the ${data[args[0]].name} queue.`)
       return;
     }
     data[game].players.push(message.author.id)
