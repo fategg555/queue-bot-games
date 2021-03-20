@@ -11,12 +11,13 @@ module.exports = {
       message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
       return
     }
-    let game  = args[0]
+    let game  = args[0] 
     if(data[message.guild.id][game].players.includes(message.author.id)) {
       message.reply(`You've already joined the ping list for the **${data[message.guild.id][args[0]].name}** queue.`)
       return;
     }
     data[message.guild.id][game].players.push(message.author.id)
+    console.log(game)
     database.write(data)
     message.reply(`You've added yourself to the ${data[message.guild.id][args[0]].name} queue list. You will be pinged if there is an opportunity to queue.`)
 	}
