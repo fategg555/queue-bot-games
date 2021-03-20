@@ -6,24 +6,25 @@ module.exports = {
   name: "q",
   description: "looking for game command",
   execute(message, args) {
-   // console.log("<#"+message.channel.id+">", stack["guild-lfg"]) 
-    if("<#"+message.channel.id+">" !== stack["guild-lfg"]) {
+   console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"]) 
+    if("<#"+message.channel.id+">" !== stack[message.guild.id]["lfg"]) {
+      console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"])
       message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
       return
     }
-    stack[args[0]].stack = [];
+    stack[message.guild.id][args[0]].stack = [];
     message.channel.send(
-      `A ${stack[args[0]].name} queue request has started. React to the msg above to secure a spot`
+      `A ${stack[message.guild.id][args[0]].name} queue request has started. React to the msg above to secure a spot`
     );
     let people = "";
-    for (let personID of stack[args[0]].players) {
+    for (let personID of stack[message.guild.id][args[0]].players) {
       // console.log(personID)
       
       people += `<@${personID}>\n`;  
     } 
     // console.log(people)
-    message.channel.send(people);
-    stack[args[0]].stack.push(message.author.id);
+    message.channel.send(people); 
+    stack[message.guild.id][args[0]].stack.push(message.author.id);
     message.react("✅");
 
     const filter = (reaction, user) => {
@@ -31,7 +32,7 @@ module.exports = {
     };
 
     const collector = message.createReactionCollector(filter, {
-      max: stack[args[0]].stackSize
+      max: stack[message.guild.id][args[0]].stackSize
     });
 
     collector.on("collect", (reaction, user) => {
@@ -39,19 +40,19 @@ module.exports = {
         message.reply("Since you requested to queue, you've already been included in the q count")
         return
       }
-      if (stack[args[0]].stack.includes(user.id)) {
+      if (stack[message.guild.id][args[0]].stack.includes(user.id)) {
         message.channel.send(`<@${user.id}>, you've already secured your spot!`)
         return
       }
       message.channel.send(`Collected response from ${user.tag}`);
-      stack[args[0]].stack.push(user.id);
+      stack[message.guild.id][args[0]].stack.push(user.id);
       
-      if (stack[args[0]].stackSize - stack[args[0]].stack.length + 1 > 0) {
-        message.channel.send(`There are ${stack[args[0]].stackSize - stack[args[0]].stack.length + 1} spots remaining`);
+      if (stack[message.guild.id][args[0]].stackSize - stack[message.guild.id][args[0]].stack.length + 1 > 0) {
+        message.channel.send(`There are ${stack[message.guild.id][args[0]].stackSize - stack[message.guild.id][args[0]].stack.length + 1} spots remaining`);
       } else {
         let string = "";
         message.channel.send("There are no more spots remaining!");
-        for (let id of stack[args[0]].stack) {
+        for (let id of stack[message.guild.id][args[0]].stack) {
           string += `<@${id}> \n`;
         }
         message.channel.send(

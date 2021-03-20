@@ -8,11 +8,11 @@ module.exports = {
 	execute(message, args) {
     let game  = args[0]
     if(data[message.guild.id][game].players.includes(message.author.id)) {
-      message.reply(`You've already joined the ping list for the **${data[args[0]].name}** queue.`)
+      message.reply(`You've already joined the ping list for the **${data[message.guild.id][args[0]].name}** queue.`)
       return;
     }
-    data[game].players.push(message.author.id)
+    data[message.guild.id][game].players.push(message.author.id)
     database.write(data)
-    message.reply(`You've added yourself to the ${data[args[0]].name} queue list. You will be pinged if there is an opportunity to queue.`)
+    message.reply(`You've added yourself to the ${data[message.guild.id][args[0]].name} queue list. You will be pinged if there is an opportunity to queue.`)
 	}
 };
