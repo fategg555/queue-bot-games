@@ -6,7 +6,8 @@ module.exports = {
   name: "q",
   description: "looking for game command",
   execute(message, args) {
-   console.log("<#"+message.channel.id+">", stack["guild-lfg"]) 
+    console.log(message.guild.id)
+   // console.log("<#"+message.channel.id+">", stack["guild-lfg"]) 
     if("<#"+message.channel.id+">" !== stack["guild-lfg"]) {
       message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
       return
@@ -35,7 +36,7 @@ module.exports = {
     });
 
     collector.on("collect", (reaction, user) => {
-      if(user.id == message.author.id) {
+      if(user.id == message.author.id) { 
         message.reply("Since you requested to queue, you've already been included in the q count")
         return
       }
