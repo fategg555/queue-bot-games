@@ -19,7 +19,7 @@ module.exports = {
       data[message.guild.id] = {}
     }
     if(!data[message.guild.id]["lfg"]) {
-      data[message.guild.id]["lfg"] = ""
+      console.log(data[message.guild.id]["lfg"])
     }
     data[message.guild.id][args[2]] = {stackSize: args[1], players: [], stack: [], name: args[0]}
     message.reply(`The game ${args[0]} has been added with a maximum stack of ${args[1]}. You can request a queue/group for this game with the **qq ${args[2]}** command`)
