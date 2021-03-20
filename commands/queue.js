@@ -20,7 +20,7 @@ module.exports = {
     for (let personID of stack[args[0]].players) {
       // console.log(personID)
       
-      people += `<@${personID}>\n`;
+      people += `<@${personID}>\n`; 
     }
     // console.log(people)
     message.channel.send(people);
