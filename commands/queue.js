@@ -6,10 +6,11 @@ module.exports = {
   name: "q",
   description: "looking for game command",
   execute(message, args) {
-    // if("<#"+message.channel.id+">" !== stack["guild-lfg"]) {
-    //   message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
-    //   return
-    // }
+   console.log("<#"+message.channel.id+">", stack["guild-lfg"]) 
+    if("<#"+message.channel.id+">" !== stack["guild-lfg"]) {
+      message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
+      return
+    }
     stack[args[0]].stack = [];
     // console.log(message.channel)
     message.channel.send(

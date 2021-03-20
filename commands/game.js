@@ -7,5 +7,6 @@ module.exports = {
 	description: 'remove yourself from the list of people for specific game queues',
 	execute(message, args) {
     data[args[2]] = {stackSize: args[1], players: [], stack: [], name: args[0]}
+    database.write(data)
 	}
 };
