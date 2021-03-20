@@ -10,17 +10,17 @@ module.exports = {
       message.reply("you don't have the right number of arguments. Make sure there are 3 arguments and they are in the order of string, integer, string.")
       return
     }
-    if (typeof(args[1])) {
+    if (!parseInt(args[1])) {
       message.reply("There isn't a number for the maximum queue size. Make sure it is a number.")
       console.log(typeof(args[1]))
       return
     }
-    
-    data[message.guild.id] = 0
-    console.log(data[message.guild.id])
+    if(!data[message.guild.id]) {
+      data[message.guild.id] = {}
+    }
     data[message.guild.id][args[2]] = {stackSize: args[1], players: [], stack: [], name: args[0]}
     message.reply(`The game ${args[0]} has been added with a maximum stack of ${args[1]}. You can request a queue/group for this game with the **qq ${args[2]}** command`)
     
-    database.write(data)
+    database.write(data) 
 	}
 };

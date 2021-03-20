@@ -6,7 +6,6 @@ module.exports = {
   name: "q",
   description: "looking for game command",
   execute(message, args) {
-    console.log(message.guild.id)
    // console.log("<#"+message.channel.id+">", stack["guild-lfg"]) 
     if("<#"+message.channel.id+">" !== stack["guild-lfg"]) {
       message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
