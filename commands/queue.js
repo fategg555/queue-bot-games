@@ -27,7 +27,7 @@ module.exports = {
       
       people += `<@${personID}>\n`;  
     } 
-    // console.log(people)
+    console.log(people)
     message.channel.send(people); 
     stack[message.guild.id][args[0]].stack.push(message.author.id);
     message.react("✅");
