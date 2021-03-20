@@ -12,7 +12,6 @@ module.exports = {
       return
     }
     stack[args[0]].stack = [];
-    // console.log(message.channel)
     message.channel.send(
       `A ${stack[args[0]].name} queue request has started. React to the msg above to secure a spot`
     );
@@ -20,8 +19,8 @@ module.exports = {
     for (let personID of stack[args[0]].players) {
       // console.log(personID)
       
-      people += `<@${personID}>\n`; 
-    }
+      people += `<@${personID}>\n`;  
+    } 
     // console.log(people)
     message.channel.send(people);
     stack[args[0]].stack.push(message.author.id);

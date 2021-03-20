@@ -13,6 +13,6 @@ module.exports = {
     }
     data[game].players.push(message.author.id)
     database.write(data)
-    message.reply(`You've added yourself to the ${args[0]} queue list. You will be pinged if there is an opportunity to queue.`)
+    message.reply(`You've added yourself to the ${data[args[0]].name} queue list. You will be pinged if there is an opportunity to queue.`)
 	}
 };
