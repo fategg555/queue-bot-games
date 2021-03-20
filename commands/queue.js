@@ -6,21 +6,22 @@ module.exports = {
   name: "q",
   description: "looking for game command",
   execute(message, args) {
-    if("<#"+message.channel.id+">" !== database["guild-lfg"]) {
-      message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
-      return
-    }
+    // if("<#"+message.channel.id+">" !== stack["guild-lfg"]) {
+    //   message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
+    //   return
+    // }
     stack[args[0]].stack = [];
-    console.log(message.channel)
+    // console.log(message.channel)
     message.channel.send(
       `A ${stack[args[0]].name} queue request has started. React to the msg above to secure a spot`
     );
     let people = "";
     for (let personID of stack[args[0]].players) {
-      console.log(personID)
+      // console.log(personID)
+      
       people += `<@${personID}>\n`;
     }
-    console.log(people)
+    // console.log(people)
     message.channel.send(people);
     stack[args[0]].stack.push(message.author.id);
     message.react("✅");
