@@ -6,12 +6,17 @@ module.exports = {
 	name: "game",
 	description: 'remove yourself from the list of people for specific game queues',
 	execute(message, args) {
-    try {
-      data[args[2]] = {stackSize: args[1], players: [], stack: [], name: args[0]}
-      message.reply(`The game ${args[10]} has been added with a maximum stack of ${args[1]}. You can request a queue/group for this game with the **qq ${args[2]}** command`)
-    } catch {
-      message.reply("Sorry, this game could not be added. Try again or consult qhelp.")
+    if (args.length !== 3) {
+      message.reply("you don't have the right number of arguments. Make sure there are 3 arguments and they are in the order of string, integer, string.")
+      return
     }
+    if (typeof(args[1]) !== Number) {
+      message.reply("There isn't a number for the maximum queue size. Make sure it is a number.")
+      return
+    }
+    
+    data[message.guild.id][args[2]] = {stackSize: args[1], players: [], stack: [], name: args[0]}
+    message.reply(`The game ${args[0]} has been added with a maximum stack of ${args[1]}. You can request a queue/group for this game with the **qq ${args[2]}** command`)
     
     database.write(data)
 	}
