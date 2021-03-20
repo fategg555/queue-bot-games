@@ -1,4 +1,4 @@
-var lfg;
+const database = require("./../util/database.js");
 
 module.exports = {
 	name: "set",
@@ -6,11 +6,10 @@ module.exports = {
 	execute(message, args) {
 	  if(/^<#.*>$/.test(args[0]) && args[0].length == 21) {
       message.channel.send(`${args[0]} has been set to the active lfg channel. Any commands will not work outside of it.`)
-      lfg = args[0]
+      database["guild-lfg"] = args[0]
     } else {
       message.channel.send("This is an invalid channel. Try again.")
       return
     }
 	},
-  "channel": lfg
 };
