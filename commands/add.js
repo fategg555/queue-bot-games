@@ -17,7 +17,7 @@ module.exports = {
       return;
     }
     data[message.guild.id][game].players.push(message.author.id)
-    console.log(game)
+    console.log(data[message.guild.id][game].players)
     database.write(data)
     message.reply(`You've added yourself to the ${data[message.guild.id][args[0]].name} queue list. You will be pinged if there is an opportunity to queue.`)
 	}

@@ -7,7 +7,11 @@ module.exports = {
   description: "looking for game command",
   execute(message, args) {
     console.log(stack, message.guild.id)
-   console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"]) 
+    if(!stack[message.guild.id]) {
+      message.reply(`You've not added any games to this server! Make sure you set the LFG channel and make some games!`)
+      return
+    }
+   console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"])  
     if("<#"+message.channel.id+">" !== stack[message.guild.id]["lfg"]) {
       console.log("<#"+message.channel.id+">", stack[message.guild.id]["lfg"])
       message.reply("You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the qset <channel> command")
