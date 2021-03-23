@@ -1,5 +1,5 @@
 const fs = require('fs')
-const dbfile = "/app/info.json" 
+const dbfile = "info.json" 
 
 const write = (content) => {
   fs.writeFile(dbfile, JSON.stringify(content), (err) => {if (err) console.log(err)})

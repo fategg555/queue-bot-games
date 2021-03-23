@@ -2,7 +2,11 @@
 // where your node app starts
 
 // we've started you off with Express (https://expressjs.com/)
+
 // but feel free to use whatever libraries or frameworks you'd like through `package.json`.
+
+require("dotenv").config()
+
 const express = require("express");
 const app = express();
 
@@ -10,6 +14,7 @@ const fs = require('fs')
 const Discord = require('discord.js');
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
+client.cooldowns = new Discord.Collection()
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -31,9 +36,9 @@ client.on("message", msg => {
   const args = msg.content.slice(config.prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
   if (!client.commands.has(command)) return;
-
+  
   try {
-	  client.commands.get(command).execute(msg, args);
+	  client.commands.get(command).execute(msg, args, client);
   } catch (error) {
 	  console.error(error);
 	  msg.reply('there was an error trying to execute that command! Check your spelling or refer to qhelp for a list of commands and args.');
