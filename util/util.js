@@ -1,5 +1,5 @@
 const checkLFG = (message, data) => {
-    if("<#"+message.channel.id+">" === data[message.guild.id]["lfg"]) {
+    if(message.channel.id === data[message.guild.id]["lfg"]) {
         //console.log("<#"+message.channel.id+">", data[message.guild.id]["lfg"])
          return true
        }

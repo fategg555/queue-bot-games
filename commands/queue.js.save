@@ -1,5 +1,6 @@
 const database = require("./../util/database.js");
-
+/^<#.*>$/.test(message.channel.id)
+/^<#.*>$/.test(server["lfg"]) && 
 let stack = database.read();
 
 module.exports = {

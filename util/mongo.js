@@ -1,30 +1,34 @@
 const database = require("./database.js")
 
-const getClient = () => {
-    const MongoClient = require('mongodb').MongoClient;
-    const uri = `mongodb+srv://admin:<${process.env.MONGO_PWD}>@cluster0.zrz6s.mongodb.net/Information?retryWrites=true&w=majority`;
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    return client
-}
+const MongoClient = require('mongodb').MongoClient;
+const uri = `mongodb+srv://admin:${process.env.MONGO_PWD}@cluster0.zrz6s.mongodb.net/Information?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const getServerData = (client, server) => {
-    client.connect(err => {
-        const collection = client.db("Information").collection("info")
-        collection.find({"server": server}).toArray((err, res) => {
-            database.write(res[0])
-        })
+const getServerData = (serverName) => {
+  client.connect(err => {
+    const collection = client.db("Information").collection("info");
+    // perform actions on the collection object
+    let serverObj = {"server": serverName}
+    collection.find(serverObj).toArray((err, res) => {
+    //   console.log(res[0])
+      database.write(res[0])
     })
-    
-    database.read()
+  }); 
+
+  return database.read()
+  
 }
 
-const createNewServerInfoDoc = (client, guild) => {
+
+const createNewServerInfoDoc = (guild) => {
     client.connect(err => {
         const collection = client.db("Information").collection("info")
-        collection.insertOne({"server": guild.name}, (err, res) => {
+        const query = {"server": guild.name}
+        collection.insertOne(query, (err, res) => {
+            let guildObj = {$set: {[guild.id]: {}}}
             if (err) throw err;
             if (res) {
-                collection.updateOne({"server": guild.name}, {$set: {[guild.id]: {}}}, (err, res) => {
+                collection.updateOne(query, guildObj, (err, res) => {
                     if (err) throw err;
                 })
             }
@@ -33,13 +37,20 @@ const createNewServerInfoDoc = (client, guild) => {
     })
 }
 
-const writeToServer = (client, data) => {
-    
+const writeToServer = (guild, fields, data) => {
+    client.connect(err => {
+        const collection = client.db("Information").collection("info")
+        const query = {"server": guild.name}
+        let id = guild.id
+        let guildObj = {$set: {[id + "." + fields]: data}}
+        collection.updateOne(query, guildObj)
+    })
 }
 
 module.exports = {
-    getClient,
-    getServerData
+    getServerData,
+    createNewServerInfoDoc,
+    writeToServer
 }
 
 

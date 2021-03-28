@@ -1,27 +1,33 @@
 const {checkManager} = require("./../util/util.js");
-
+const { writeToServer, getServerData, createNewServerInfoDoc } = require("../util/mongo.js");
 //let data = database.read()
 
 module.exports = {
 	name: "set",
-	description: 'set various properties',
+	description: 'set various LFG channel',
   params: "<none>",
 	execute(message, args) {
+
+    let server = getServerData(message.guild.name)
     if (!checkManager(message)) {
       message.author.send("You do not have the *Game Manager* role. Either request to get the role or request someone with the role to set the LFG.")
       return
       }
-	const database = require("./../util/database.js");
-	let data = database.read()
 
-	  if(/^<#.*>$/.test(args[0]) && args[0].length == 21) {
-      message.channel.send(`${args[0]} has been set to the active lfg channel. Any commands will not work outside of it ✅.`)
-      if(!data[message.guild.id]) {
-        data[message.guild.id] = {}
-        data[message.guild.id]["lfg"] = ""
+	  if(message.channel.id.length == 18) {
+      if (!server[message.guild.id]) {
+        createNewServerInfoDoc(message.guild)
       }
-      data[message.guild.id]["lfg"] = args[0]
-      database.write(data)
+
+      if (getServerData(message.guild.name)[message.guild.id]["lfg"] === message.channel.id) {
+        message.channel.send("This channel has already been set.")
+        return
+      }
+      
+      writeToServer(message.guild, "lfg", message.channel.id)
+      message.channel.send(`The LFG channel has been set to <#${message.channel.id}> ✅!`)
+        
+
     } else {
       message.channel.send("This is an invalid channel. Try again.")
       return

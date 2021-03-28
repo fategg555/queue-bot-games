@@ -1,12 +1,14 @@
 const {checkLFG} = require("./../util/util.js")
+const { writeToServer, getServerData } = require("../util/mongo.js");
 
 module.exports = {
 	name: "help",
 	description: 'view all commands and params',
     params: "<none>",
 	execute(message, args, client) {
-    const database = require("./../util/database.js")
-    let data = database.read();
+
+    let data = getServerData(message.channel.name);
+
     const fs = require('fs')
     const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
     if (!checkLFG(message, data)) {
