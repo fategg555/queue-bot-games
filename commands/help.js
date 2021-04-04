@@ -1,18 +1,18 @@
-const {checkLFG} = require("./../util/util.js")
-const { writeToServer, getServerData } = require("../util/mongo.js");
+const {checkAllLFG} = require("./../util/util.js")
+const { writeToGuild, getGuildData } = require("../util/mongo.js");
 
 module.exports = {
 	name: "help",
 	description: 'view all commands and params',
     params: "<none>",
-	execute(message, args, client) {
+	async execute(message, args, client) {
 
-    let data = getServerData(message.channel.name);
+    let data = await getGuildData(message.guild.name);
 
     const fs = require('fs')
     const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-    if (!checkLFG(message, data)) {
-        message.author.send(`You are not in the LFG channel. Please enter commands into the lfg channel or set the lfg channel with the ${"`qset <channel>`"} command`)
+    if (!checkAllLFG(message, data)) {
+        message.channel.send(`You are not in an LFG channel. Please enter commands into an lfg channel`)
           return
     }
     let names = []

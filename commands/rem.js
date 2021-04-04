@@ -1,17 +1,17 @@
 const {checkLFG, checkManager} = require("./../util/util.js")
+const { writeToGuild, getGuildData, deleteFromGuild } = require("../util/mongo.js");
 
 module.exports = {
         name: "rem",
         description: 'removes games',
 		params: "<game shortcut>",
-        execute(message, args, client) {
-
-        let database = require("./../util/database.js");
-        let data = database.read()
+        async execute(message, args, client) {
+	let data = await getGuildData(message.guild.name)
 	let game = data[message.guild.id][args[0]]
 	//console.log(message.member.roles.cache.some(role => role.name === "Game Manager"))
-	if (!checkLFG(message, data)) {
-		message.author.send(`You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the ${"`qset <channel>`"} command`)
+	if (!checkLFG(message, data, args[0])) {
+		message.channel.send(`You are not in the LFG channel. Please enter commands into LFG or set the lfg channel with the ${"`qset <channel>`"} command`)
+		return
 	  }
 	  if (!checkManager(message)) {
 		message.author.send("You do not have the *Game Manager* role. Either request to get the role or request someone with the role to add games.")
@@ -29,17 +29,17 @@ module.exports = {
 		return reaction.emoji.name && (user.tag !== "Queuey Boi#6717" && user.id === message.author.id);
 	}
 	let collector = message.createReactionCollector(filter);
-		collector.on("collect", (reaction, user) => {
-			database = require("./../util/database.js");
-        	data = database.read()
+		collector.on("collect", async (reaction, user) => {
+			data = await getGuildData(message.guild.name)
+			let tempData = data
 			// if(!data[message.guild.id][args[0]]) {
 			// 	message.reply("This game does not exist. It has been previously deleted and cannot be further deleted, or pulled from the grave.")
 			// 	return
 			// }
 			if(reaction.emoji.name === "✅") {
-				delete data[message.guild.id][args[0]]
-				database.write(data)
-				message.reply("This game has been successfully removed✅.")
+				delete tempData[message.guild.id][args[0]]
+				await deleteFromGuild(message.guild, tempData)
+				message.reply("This game has been successfully removed ✅.")
 				message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
 				return
 			}
@@ -49,9 +49,5 @@ module.exports = {
 				return
 			}
 		})
-
-
-
-		
     },
 };
