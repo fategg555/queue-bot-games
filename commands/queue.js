@@ -124,8 +124,7 @@ module.exports = {
         return
       }
       message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-      delete game.stack[author]
-	    database.write(stack)
+      await removeStack()
       message.reply(`Your **${game.name}** queue expired. Requeue with the ${"`qq " + args[0] +"`"} command.`)
       return
     })
