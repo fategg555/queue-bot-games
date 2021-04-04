@@ -41,80 +41,16 @@ client.on("message", msg => {
 	  client.commands.get(command).execute(msg, args, client);
   } catch (error) {
 	  console.error(error);
-	  msg.reply('there was an error trying to execute that command! Check your spelling or refer to qhelp for a list of commands and args.');
+	  msg.reply('There was an error trying to execute that command! Ignore this if the command works but consult **qhelp** if you are actually having a problem.');
   }
 })
 
 // our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// const dreams = [
+//   "Find and count some sheep",
+//   "Climb a really tall mountain",
+//   "Wash the dishes"
+// ];
 // make all the files in 'public' available
 // https://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
@@ -125,10 +61,10 @@ app.get("/", (request, response) => {
 });
 
 // send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
+// app.get("/dreams", (request, response) => {
+//   // express helps us take JS objects and send them as JSON
+//   response.json(dreams);
+// });
 
 client.login(process.env.BOT_TOKEN)
 // listen for requests :)

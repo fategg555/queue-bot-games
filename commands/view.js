@@ -1,21 +1,20 @@
-const {checkLFG} = require("./../util/util.js")
+const {checkAllLFG} = require("./../util/util.js")
+const { writeToGuild, getGuildData } = require("../util/mongo.js");
 
 module.exports = {
 	name: "view",
 	description: 'view games and their shortcuts',
     params: "<none>",
-	execute(message, args) {
-    console.log(message.content)
-	const database = require("./../util/database.js");
-	let data = database.read()
+	async execute(message, args) {
+        let data = await getGuildData(message.guild.name)
 
-    if (!checkLFG(message, data)) {
-        message.author.send(`You are not in the LFG channel. Please enter commands into ${data[message.guild.id]["lfg"]} or set the lfg channel with the ${"`qset <channel>`"} command`)
+    if (!checkAllLFG(message, data)) {
+        message.channel.send(`You are not in an LFG channel. Please enter this into an lfg channel.`)
         return
       }
 
     let games = Object.keys(data[message.guild.id])
-    games.splice(games.indexOf("lfg"), 1)
+    games.splice(games.indexOf("lfgs"), 1)
     
     let gamesString = ""
     let namesString = ""
@@ -82,7 +81,7 @@ module.exports = {
         // },
     };
 
-    message.author.send({embed: viewGamesEmbed}).catch(e => message.reply("You can't view any games because there aren't any. Add a game to view it."))
+    message.channel.send({embed: viewGamesEmbed}).catch(e => message.reply("You can't view any games because there aren't any. Add a game to view it."))
 
 	},
 };

@@ -1,8 +1,8 @@
 const fs = require('fs')
-const dbfile = "info.json" 
+const dbfile = __dirname + "/info.json" 
 
 const write = (content) => {
-  fs.writeFile(dbfile, JSON.stringify(content), (err) => {if (err) console.log(err)})
+  fs.writeFile(dbfile, JSON.stringify(content), (err) => {if (err) throw err})
 }
 
 const read = () => {
