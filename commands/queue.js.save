@@ -78,3 +78,22 @@ personQueue[message.author.id].push(message.author.id)
     });
   }
 };
+
+
+//   if(reaction.emoji.name === "❌" && !game.stack[author].includes(user.id)) {
+    //     return
+    //   }
+    //   if(reaction.emoji.name === "❌" && game.stack[author].includes(user.id)) {
+    //     game.stack[author].splice(game.stack[author].indexOf(user.id), 1)
+    //     writeToGuild(message.guild, args[0] + `.stack.${author}`, game.stack[author])
+    //     updateQueue()
+    //     return
+    //   }
+    //   if(reaction.emoji.name === "✅" && user.id == author && game.stack[author].includes(user.id)) {
+    //     //queue requester reacts to msg
+    //     return
+    //  }
+    //   if (reaction.emoji.name === "✅" && game.stack[author].includes(user.id)) {
+    //     // user.send(`<@${user.id}>, you've already secured your spot!`)
+    //     return
+    //   }

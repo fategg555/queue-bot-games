@@ -41,7 +41,7 @@ client.on("message", msg => {
 	  client.commands.get(command).execute(msg, args, client);
   } catch (error) {
 	  console.error(error);
-	  msg.reply('there was an error trying to execute that command! Check your spelling or refer to qhelp for a list of commands and args.');
+	  msg.reply('There was an error trying to execute that command! Ignore this if the command works but consult **qhelp** if you are actually having a problem.');
   }
 })
 
@@ -66,7 +66,7 @@ app.get("/", (request, response) => {
 //   response.json(dreams);
 // });
 
-client.login(process.env.TEST_TOKEN)
+client.login(process.env.BOT_TOKEN)
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
