@@ -1,5 +1,5 @@
 const {checkLFG} = require("./../util/util.js");
-const {writeToGuild, getGuildData } = require("../util/mongo.js");
+const {writeToGuild, getGuildData, getUserData, createUser, updateUserData } = require("../util/mongo.js");
 const Discord  = require("discord.js")
 //let stack = database.read();
 
@@ -11,6 +11,11 @@ module.exports = {
   async execute(message, args, client) { 
 
   const author = message.author.id
+  let authorData = await getUserData(author)
+  if (!authorData) {
+    await createUser(author)
+    authorData = await getUserData(author)
+  }
   const updateQueue = async (msg, color=0x0099ff) => {
     console.log("beginning of queue update", new Date().getSeconds())
     console.log("before GameData call", new Date().getSeconds())
@@ -21,6 +26,19 @@ module.exports = {
         console.log("after gamestack call", new Date().getSeconds())
         viewStackEmbed.fields[0].name = `**People in stack** (${game.stack[author].length}/${game.stackSize})`
         if (game.stackSize - game.stack[author].length === 0) {
+          let tokens = authorData.tokens
+          tokens += game.stack[author].length
+          await updateUserData(author, "tokens", tokens)
+          for (let usr of game.stack[author]) {
+            let usrData = await getUserData(usr)
+            if(!usrData) {
+              await createUser(user.id)
+              usrData = await getUserData(user.id)
+            }
+            let tokens = usrData.tokens
+            tokens += 1
+            await updateUserData(usr, "tokens", tokens)
+          }
           console.log("poopoobeans")
           msg.channel.send("There are no more spots remaining!");
           embed.then(message => updateColor(message, 0x00ff44))
@@ -142,6 +160,7 @@ if (!data[message.guild.id][args[0]]) {
     });
 
     collector.on("collect", async(reaction, user) => {
+      
       game = await getGameData()
       console.log("current game stack", getGameStack())
 

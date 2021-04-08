@@ -43,6 +43,49 @@ const createNewServerInfoDoc = async (guild) => {
     })
 }
 
+const createUser = async(user) => {
+    return new Promise((resolve, reject) => {
+        client.connect(err => {
+            const collection = client.db("Information").collection("users")
+            const query = {"id": user}
+            collection.insertOne(query, (err, res) => {
+                let guildObj = {$set: {"tokens": 0}}
+                if (err) reject(err);
+                if (res) {
+                    collection.updateOne(query, guildObj, (err, res) => {
+                        if (err) throw err;
+                        resolve(true)
+                    })
+                }
+            })
+            
+        })
+    })
+}
+
+const updateUserData = async(user, fields, data) => {
+    return new Promise((resolve, reject) => {
+        client.connect(err => {
+            const collection = client.db("Information").collection("users")
+            const query = {"id": user}
+            let obj = {$set: {[fields]: data}}
+            await collection.updateOne(query, obj)
+            resolve(true)
+            
+        })
+    })
+}
+
+const getUserData = async(user) => {
+    return new Promise((resolve, reject) => {
+        client.connect(err => {
+            const collection = client.db("Information").collection("users")
+            const query = {"id": user}
+            await collection.find(query).then(res => resolve(res[0])).catch(err => {console.log(err)})
+        })
+    })
+}
+
 const writeToGuild = (guild, fields, data) => {
     return new Promise((res, rej) => {
             client.connect(async err => {
@@ -72,7 +115,10 @@ module.exports = {
     getGuildData,
     createNewServerInfoDoc,
     writeToGuild,
-    deleteFromGuild
+    deleteFromGuild,
+    createUser,
+    updateUserData,
+    getUserData
 }
 
 
