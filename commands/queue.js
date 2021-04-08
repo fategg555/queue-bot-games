@@ -32,11 +32,12 @@ module.exports = {
           await updateUserData(author, "tokens", tokens)
 	  console.log(author, tokens)
           for (let usr of game.stack[author]) {
+	    console.log("usr", usr)
 	    if (usr === author) continue
             let usrData = await getUserData(usr)
             if(!usrData) {
-              await createUser(usr.id)
-              usrData = await getUserData(usr.id)
+              await createUser(usr)
+              usrData = await getUserData(usr)
             }
             let tokns = usrData.tokens
             tokns += 1

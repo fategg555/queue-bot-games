@@ -23,7 +23,7 @@ module.exports = {
             let items = Object.keys(userData)
             for (let item of items) {
                 let emote = await getEmoji(item)
-                itemsString += `${emote} ${item}: ${userData[item]}`
+                itemsString += `${emote} ${item}: ${userData[item]}\n`
             }
         }
 
@@ -32,7 +32,7 @@ module.exports = {
 
         const viewBankEmbed = {
             color: 0x91007e,
-            title: `<@${message.author.tag}>'s Bank`,
+            title: `${message.author.tag}'s Bank`,
             description: 'Currency and Items',
             fields: [
                 {
