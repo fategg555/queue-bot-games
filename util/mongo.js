@@ -48,11 +48,11 @@ const createUser = async(user) => {
         client.connect(err => {
             const collection = client.db("Information").collection("users")
             const query = {"id": user}
-            collection.insertOne(query, (err, res) => {
+            collection.insertOne(query, async (err, res) => {
                 let guildObj = {$set: {"tokens": 0}}
                 if (err) reject(err);
                 if (res) {
-                    collection.updateOne(query, guildObj, (err, res) => {
+                    await collection.updateOne(query, guildObj, (err, res) => {
                         if (err) throw err;
                         resolve(true)
                     })
@@ -65,7 +65,7 @@ const createUser = async(user) => {
 
 const updateUserData = async(user, fields, data) => {
     return new Promise((resolve, reject) => {
-        client.connect(err => {
+        client.connect(async err => {
             const collection = client.db("Information").collection("users")
             const query = {"id": user}
             let obj = {$set: {[fields]: data}}
