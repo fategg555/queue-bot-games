@@ -50,6 +50,7 @@ const createUser = async(user) => {
             const query = {"id": user}
             collection.insertOne(query, async (err, res) => {
                 let guildObj = {$set: {"tokens": 0}}
+                addEmoji("tokens", "💵")
                 if (err) reject(err);
                 if (res) {
                     await collection.updateOne(query, guildObj, (err, res) => {
@@ -72,6 +73,29 @@ const updateUserData = async(user, fields, data) => {
             await collection.updateOne(query, obj)
             resolve(true)
             
+        })
+    })
+}
+
+const addEmoji = (item, emoji) => {
+    return new Promise((resolve, reject) => {
+        client.connect(async err => {
+            const collection = client.db("Information").collection("emojis")
+            const query = {"name": item}
+            await collection.insertOne(query, async (err, res) => {
+                let obj = {$set: {"emoji": emoji}}
+                await collection.updateOne(query, obj)
+                resolve(true)
+            })
+        })
+    })
+}
+
+const getEmoji = (item) => {
+    return new Promise((resolve, reject) => {
+        client.connect(async err => {
+            const collection = client.db("Information").collection("emojis")
+            await collection.find({"name": item}).toArray().then(res => resolve(res[0]["emoji"])).catch(err => resolve("no emote for this item"))
         })
     })
 }
@@ -118,7 +142,9 @@ module.exports = {
     deleteFromGuild,
     createUser,
     updateUserData,
-    getUserData
+    getUserData,
+    getEmoji,
+    addEmoji
 }
 
 

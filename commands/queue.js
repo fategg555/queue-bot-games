@@ -1,5 +1,5 @@
 const {checkLFG} = require("./../util/util.js");
-const {writeToGuild, getGuildData, getUserData, createUser, updateUserData } = require("../util/mongo.js");
+const {writeToGuild, getGuildData, getUserData, createUser, updateUserData, addEmoji} = require("../util/mongo.js");
 const Discord  = require("discord.js")
 //let stack = database.read();
 
@@ -35,7 +35,7 @@ module.exports = {
 	    if (usr === author) continue
             let usrData = await getUserData(usr)
             if(!usrData) {
-              await createUser(user.id)
+              await createUser(usr.id)
               usrData = await getUserData(usr.id)
             }
             let tokns = usrData.tokens
