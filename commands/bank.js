@@ -23,7 +23,7 @@ module.exports = {
             let items = Object.keys(userData)
             for (let item of items) {
                 let emote = await getEmoji(item)
-                itemsString += `${emote} ${item}: ${userData[item]}\n`
+                itemsString += `${emote} ${"`"+item+"`"}: ${userData[item]}\n`
             }
         }
 

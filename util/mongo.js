@@ -50,7 +50,7 @@ const createUser = async(user) => {
             const query = {"id": user}
             collection.insertOne(query, async (err, res) => {
                 let guildObj = {$set: {"tokens": 0}}
-                addEmoji("tokens", "💵")
+                //addEmoji("tokens", "💵🪙)
                 if (err) reject(err);
                 if (res) {
                     await collection.updateOne(query, guildObj, (err, res) => {
