@@ -65,7 +65,7 @@ const createUser = async(user) => {
 
 const updateUserData = async(user, fields, data) => {
     return new Promise((resolve, reject) => {
-        client.connect(err => {
+        client.connect(async err => {
             const collection = client.db("Information").collection("users")
             const query = {"id": user}
             let obj = {$set: {[fields]: data}}
@@ -76,12 +76,12 @@ const updateUserData = async(user, fields, data) => {
     })
 }
 
-const getUserData = async(user) => {
+const getUserData = (user) => {
     return new Promise((resolve, reject) => {
-        client.connect(err => {
+        client.connect(async err => {
             const collection = client.db("Information").collection("users")
             const query = {"id": user}
-            await collection.find(query).then(res => resolve(res[0])).catch(err => {console.log(err)})
+            await collection.find(query).toArray().then(res => resolve(res[0])).catch(err => {console.log(err)})
         })
     })
 }

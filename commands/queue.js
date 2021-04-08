@@ -27,17 +27,20 @@ module.exports = {
         viewStackEmbed.fields[0].name = `**People in stack** (${game.stack[author].length}/${game.stackSize})`
         if (game.stackSize - game.stack[author].length === 0) {
           let tokens = authorData.tokens
+	  console.log(author, tokens)
           tokens += game.stack[author].length
           await updateUserData(author, "tokens", tokens)
+	  console.log(author, tokens)
           for (let usr of game.stack[author]) {
+	    if (usr === author) continue
             let usrData = await getUserData(usr)
             if(!usrData) {
               await createUser(user.id)
-              usrData = await getUserData(user.id)
+              usrData = await getUserData(usr.id)
             }
-            let tokens = usrData.tokens
-            tokens += 1
-            await updateUserData(usr, "tokens", tokens)
+            let tokns = usrData.tokens
+            tokns += 1
+            await updateUserData(usr, "tokens", tokns)
           }
           console.log("poopoobeans")
           msg.channel.send("There are no more spots remaining!");
