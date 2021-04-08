@@ -1,6 +1,7 @@
 const {checkLFG} = require("./../util/util.js");
 const {writeToGuild, getGuildData, getUserData, createUser, updateUserData, addEmoji} = require("../util/mongo.js");
-const Discord  = require("discord.js")
+const Discord  = require("discord.js");
+const { connect } = require("mongodb");
 //let stack = database.read();
 
 module.exports = {
@@ -11,11 +12,12 @@ module.exports = {
   async execute(message, args, client) { 
 
   const author = message.author.id
-  let authorData = await getUserData(author)
-  if (!authorData) {
-    await createUser(author)
-    authorData = await getUserData(author)
+  let authordata = await getUserData(author)
+  if (!authordata) {
+    await createUser(author, message.guild.id)
   }
+  authordata = await getUserData(author)
+  console.log("AUTHOR", authordata)
   const updateQueue = async (msg, color=0x0099ff) => {
     console.log("beginning of queue update", new Date().getSeconds())
     console.log("before GameData call", new Date().getSeconds())
@@ -26,22 +28,29 @@ module.exports = {
         console.log("after gamestack call", new Date().getSeconds())
         viewStackEmbed.fields[0].name = `**People in stack** (${game.stack[author].length}/${game.stackSize})`
         if (game.stackSize - game.stack[author].length === 0) {
-          let tokens = authorData.tokens
-	  console.log(author, tokens)
+          if(!authordata[message.guild.id]) {
+            await updateUserData(author, message.guild.id +".tokens", 0)
+          }
+          authordata = await getUserData(author)
+          let authorData = authordata[message.guild.id]
+          let tokens = authorData["tokens"]
           tokens += game.stack[author].length
-          await updateUserData(author, "tokens", tokens)
-	  console.log(author, tokens)
+          await updateUserData(author, message.guild.id +".tokens", tokens)
           for (let usr of game.stack[author]) {
-	    console.log("usr", usr)
 	    if (usr === author) continue
             let usrData = await getUserData(usr)
             if(!usrData) {
-              await createUser(usr)
-              usrData = await getUserData(usr)
+              await createUser(usr, message.guild.id)
             }
-            let tokns = usrData.tokens
+            if(!usrData[message.guild.id]) {
+              await updateUserData(usr, message.guild.id +".tokens", 0)
+            }
+            usrData = await getUserData(usr)
+            console.log(usrData)
+            let userData = usrData[message.guild.id]
+            let tokns = userData["tokens"]
             tokns += 1
-            await updateUserData(usr, "tokens", tokns)
+            await updateUserData(usr, message.guild.id+".tokens", tokns)
           }
           console.log("poopoobeans")
           msg.channel.send("There are no more spots remaining!");

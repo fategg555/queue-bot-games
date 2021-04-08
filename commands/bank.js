@@ -14,12 +14,11 @@ module.exports = {
         }
 
         itemsString = ""
-        let userData = await getUserData(message.author.id)
-        if (!userData) {
-            itemsString += "You don't have any items/currency"
+        let usrData = await getUserData(message.author.id)
+        if (!usrData[message.guild.id]) {
+            itemsString += "You don't have any items/currency."
         } else {
-            delete userData["_id"]
-            delete userData["id"]
+            let userData = usrData[message.guild.id]
             let items = Object.keys(userData)
             for (let item of items) {
                 let emote = await getEmoji(item)
@@ -33,10 +32,10 @@ module.exports = {
         const viewBankEmbed = {
             color: 0x91007e,
             title: `${message.author.tag}'s Bank`,
-            description: 'Currency and Items',
+            description: `${message.guild.name} account`,
             fields: [
                 {
-                    name: '**Stuff**',
+                    name: '**Currency and Items**',
                     value: itemsString,
                     inline: false,
                 }

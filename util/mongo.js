@@ -43,14 +43,14 @@ const createNewServerInfoDoc = async (guild) => {
     })
 }
 
-const createUser = async(user) => {
+const createUser = async(user, guild) => {
     return new Promise((resolve, reject) => {
         client.connect(err => {
             const collection = client.db("Information").collection("users")
             const query = {"id": user}
             collection.insertOne(query, async (err, res) => {
-                let guildObj = {$set: {"tokens": 0}}
-                //addEmoji("tokens", "💵🪙)
+                let guildObj = {$set: {[guild+".tokens"]: 0}}
+                // addEmoji("tokens", "🪙")
                 if (err) reject(err);
                 if (res) {
                     await collection.updateOne(query, guildObj, (err, res) => {
@@ -77,8 +77,12 @@ const updateUserData = async(user, fields, data) => {
     })
 }
 
-const addEmoji = (item, emoji) => {
-    return new Promise((resolve, reject) => {
+const addEmoji = async(item, emoji) => {
+    return new Promise(async (resolve, reject) => {
+        let emoticon = await getEmoji(item)
+        if (emoticon) {
+            resolve(true)
+        }
         client.connect(async err => {
             const collection = client.db("Information").collection("emojis")
             const query = {"name": item}
