@@ -28,7 +28,7 @@ module.exports = {
         console.log("after gamestack call", new Date().getSeconds())
         viewStackEmbed.fields[0].name = `**People in stack** (${game.stack[author].length}/${game.stackSize})`
         if (game.stackSize - game.stack[author].length === 0) {
-          if(!authordata[message.guild.id]) {
+          if(authordata?.[message.guild.id] || authordata?.[message.guild.id] === undefined) {
             await updateUserData(author, message.guild.id +".tokens", 0)
           }
           authordata = await getUserData(author)
@@ -42,7 +42,7 @@ module.exports = {
             if(!usrData) {
               await createUser(usr, message.guild.id)
             }
-            if(!usrData[message.guild.id]) {
+            if(usrData?.[message.guild.id] === null || usrData?.[message.guild.id] === undefined) {
               await updateUserData(usr, message.guild.id +".tokens", 0)
             }
             usrData = await getUserData(usr)

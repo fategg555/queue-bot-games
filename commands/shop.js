@@ -84,7 +84,7 @@ module.exports = {
                 if (reaction.emoji.name === "✅") {
                     balance -= cost
                     let data = await getUserData(user.id)
-                    let newStuff = data[message.guild.id][args[1]]
+                    if(!data[message.guild.id][args[1]]) newStuff = 0
                     newStuff += number
                     await updateUserData(user.id, message.guild.id +"."+args[1], newStuff)
                     await updateUserData(user.id, message.guild.id +"."+currency, balance)
