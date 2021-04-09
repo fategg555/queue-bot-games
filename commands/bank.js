@@ -15,7 +15,7 @@ module.exports = {
 
         itemsString = ""
         let usrData = await getUserData(message.author.id)
-        if (usrData?.[message.guild.id] !== null) {
+        if (usrData?.[message.guild.id] === null) {
             itemsString += "You don't have any items/currency."
         } else {
             let userData = usrData[message.guild.id]

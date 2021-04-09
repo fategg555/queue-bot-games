@@ -1,5 +1,5 @@
 const { checkAllLFG } = require("./../util/util.js")
-const { writeToGuild, getGuildData, getEmoji, getUserData, getShop } = require("../util/mongo.js");
+const { writeToGuild, getGuildData, getEmoji, getUserData, getShop, updateUserData } = require("../util/mongo.js");
 const { Structures } = require("discord.js");
 
 module.exports = {
@@ -16,7 +16,6 @@ module.exports = {
         itemsString = ""
         let shop = await getShop()
         delete shop["_id"]
-        console.log(shop)
         for (let item of shop) {
             let price = item.price.split(" ")
             let value = price[0]
@@ -35,8 +34,8 @@ module.exports = {
                 }
             ],
             timestamp: new Date(),
-        };
-        if (typeof (parseInt(args[0])) === "number") {
+        }
+        if (parseInt(args[0])) {
             let number = parseInt(args[0])
             let user = await getUserData(message.author.id)
             let shop = await getShop()
@@ -55,7 +54,7 @@ module.exports = {
             let cost = parseInt(price) * number
             let balance = user[message.guild.id][currency]
             if (cost > balance) {
-                message.channel.send(`You don't have enough ${"`" + item.currency + "`"} to buy ${"`" + item.name + "`"}.`)
+                message.channel.send(`You don't have enough ${"`" + currency + "`"} to buy ${"`" + item.name + "`"}.`)
                 return
             }
             let reactionMessage = await new Promise((resolve, reject) => {
@@ -84,7 +83,10 @@ module.exports = {
                 }
                 if (reaction.emoji.name === "✅") {
                     balance -= cost
-                    await updateUserData(user.id, message.guild.id +"."+args[1], number)
+                    let data = await getUserData(user.id)
+                    let newStuff = data[message.guild.id][args[1]]
+                    newStuff += number
+                    await updateUserData(user.id, message.guild.id +"."+args[1], newStuff)
                     await updateUserData(user.id, message.guild.id +"."+currency, balance)
                     message.channel.send("Your purchase has been completed.")
                     reactionMessage.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
