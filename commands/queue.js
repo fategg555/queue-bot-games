@@ -35,7 +35,7 @@ module.exports = {
           let authorData = authordata[message.guild.id]
           let tokens = authorData["tokens"]
           tokens += game.stack[author].length
-          await updateUserData(author, message.guild.id +".tokens", tokens)
+          if (game.stackSize > 3) await updateUserData(author, message.guild.id +".tokens", tokens)
           for (let usr of game.stack[author]) {
 	    if (usr === author) continue
             let usrData = await getUserData(usr)
@@ -50,7 +50,7 @@ module.exports = {
             let userData = usrData[message.guild.id]
             let tokns = userData["tokens"]
             tokns += 1
-            await updateUserData(usr, message.guild.id+".tokens", tokns)
+            if (game.stackSize > 3) await updateUserData(usr, message.guild.id+".tokens", tokns)
           }
           console.log("poopoobeans")
           msg.channel.send("There are no more spots remaining!");
