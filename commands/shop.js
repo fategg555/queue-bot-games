@@ -39,15 +39,26 @@ module.exports = {
             let number = parseInt(args[0])
             let user = await getUserData(message.author.id)
             let shop = await getShop()
+            let itemName = await new Promise((resolve, reject) => {
+                let nameString = ""
+                for(let word of args.splice(1, args.length - 1)) {
+                    nameString += word + " "
+                }
+                let string = nameString.slice(0, nameString.length - 1)
+                resolve(string)
+            })
             let item = await new Promise((resolve, reject) => {
                 for (let stuffs of shop) {
-                    if (stuffs.name === args[1]) {
+                    console.log(stuffs.name)
+                    if (stuffs.name === itemName) {
                         resolve(stuffs)
-                    } else {
                         return
+                    } else {
+                        continue
                     }
-
                 }
+                message.channel.send(`The item ${"`" + itemName + "`"} does not exist. Look up items in the shop.`)
+                return
             })
             let price = item.price.split(" ")[0]
             let currency = item.price.split(" ")[1]
@@ -58,7 +69,7 @@ module.exports = {
                 return
             }
             let reactionMessage = await new Promise((resolve, reject) => {
-                message.channel.send(`Are you sure you want to buy ${args[0]} ${"`" + args[1] + "`"} at a cost of **${cost + " " + currency}**?`).then(msg => {
+                message.channel.send(`Are you sure you want to buy ${args[0]} ${"`" + itemName + "`"} at a cost of **${cost + " " + "`" + currency + "`"}**?`).then(msg => {
                     msg.react("✅").then(() => {
                         msg.react("❌")
                         resolve(msg)
@@ -86,9 +97,9 @@ module.exports = {
                     let data = await getUserData(user.id)
                     if(!data[message.guild.id][args[1]]) newStuff = 0
                     newStuff += number
-                    await updateUserData(user.id, message.guild.id +"."+args[1], newStuff)
+                    await updateUserData(user.id, message.guild.id +"."+itemName, newStuff)
                     await updateUserData(user.id, message.guild.id +"."+currency, balance)
-                    message.channel.send("Your purchase has been completed.")
+                    message.channel.send("Your purchase has been completed ✅.")
                     reactionMessage.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
                     return
                 }
