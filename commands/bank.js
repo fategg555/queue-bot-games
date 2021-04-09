@@ -15,7 +15,7 @@ module.exports = {
 
         itemsString = ""
         let usrData = await getUserData(message.author.id)
-        if (!usrData[message.guild.id]) {
+        if (usrData?.[message.guild.id] !== null) {
             itemsString += "You don't have any items/currency."
         } else {
             let userData = usrData[message.guild.id]
@@ -25,9 +25,6 @@ module.exports = {
                 itemsString += `${emote} ${"`"+item+"`"}: ${userData[item]}\n`
             }
         }
-
-
-
 
         const viewBankEmbed = {
             color: 0x91007e,

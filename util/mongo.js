@@ -99,7 +99,7 @@ const getEmoji = (item) => {
     return new Promise((resolve, reject) => {
         client.connect(async err => {
             const collection = client.db("Information").collection("emojis")
-            await collection.find({"name": item}).toArray().then(res => resolve(res[0]["emoji"])).catch(err => resolve("no emote for this item"))
+            await collection.find({"name": item}).toArray().then(res => resolve(res[0]["emoji"])).catch(err => resolve())
         })
     })
 }
@@ -114,6 +114,14 @@ const getUserData = (user) => {
     })
 }
 
+const getShop = () => {
+    return new Promise((resolve, reject) => {
+        client.connect(async err => {
+            const collection = client.db("Information").collection("shop")
+            await collection.find().toArray().then(res => resolve(res)).catch(err => resolve(err))
+        })
+    })
+}
 const writeToGuild = (guild, fields, data) => {
     return new Promise((res, rej) => {
             client.connect(async err => {
@@ -148,7 +156,8 @@ module.exports = {
     updateUserData,
     getUserData,
     getEmoji,
-    addEmoji
+    addEmoji,
+    getShop
 }
 
 
