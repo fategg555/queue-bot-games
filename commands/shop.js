@@ -95,10 +95,18 @@ module.exports = {
                 if (reaction.emoji.name === "✅") {
                     balance -= cost
                     let data = await getUserData(user.id)
-                    if(!data[message.guild.id][args[1]]) newStuff = 0
+		    newStuff = data[message.guild.id][itemName]
+                    if(!newStuff) newStuff = 0
                     newStuff += number
-                    await updateUserData(user.id, message.guild.id +"."+itemName, newStuff)
-                    await updateUserData(user.id, message.guild.id +"."+currency, balance)
+                    //await updateUserData(user.id, message.guild.id +"."+itemName, newStuff)
+                    //await updateUserData(user.id, message.guild.id +"."+currency, balance)
+		    if (balance === 0) {
+			delete data[message.guild.id][currency]
+			await updateUserData(user.id, message.guild.id, data[message.guild.id])
+		    } else {
+			await updateUserData(user.id, message.guild.id+"."+currency, balance)
+		    }
+		    await updateUserData(user.id, message.guild.id+"."+itemName, newStuff)
                     message.channel.send("Your purchase has been completed ✅.")
                     reactionMessage.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
                     return
