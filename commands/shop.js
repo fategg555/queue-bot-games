@@ -9,7 +9,6 @@ module.exports = {
     async execute(message, args) {
         let data = await getGuildData(message.guild.name)
         if (!checkAllLFG(message, data)) {
-            message.channel.send(`You are not in an LFG channel. Please enter this into an lfg channel.`)
             return
         }
 

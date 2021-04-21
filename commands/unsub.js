@@ -24,7 +24,6 @@ let players = game.players
 		return
 	}
         if (!checkLFG(message, data, args[0])) {
-          message.author.send(`You are not in the LFG channel. Please enter commands into ${data["lfg"]} or set the lfg channel with the ${"`qset <channel>`"} command`)
           return
         }
 	if(!game) {

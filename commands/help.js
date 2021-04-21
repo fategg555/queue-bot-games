@@ -12,7 +12,6 @@ module.exports = {
     const fs = require('fs')
     const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
     if (!checkAllLFG(message, data)) {
-        message.channel.send(`You are not in an LFG channel. Please enter commands into an lfg channel`)
           return
     }
     let names = []

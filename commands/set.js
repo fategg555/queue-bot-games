@@ -22,7 +22,6 @@ module.exports = {
     let lfgs = data["lfgs"]
     
     if (!checkManager(message)) {
-      message.channel.send("You do not have the *Game Manager* role. Either request to get the role or request someone with the role to set the LFG.")
       return
     }
     
@@ -65,7 +64,7 @@ if (args.length !== 2) {message.reply("You need 2 arguments for this command to 
     } else if (args[0] === "expiry") {
 if(args.length !== 3) {message.reply("You need 3 args for this command"); return}
       try {
-let time = parseInt(args[1])
+let time = Math.abs(parseInt(args[1]))
         if (typeof(time) !== "number") {
           message.reply("The value for the expiry is not valid. Make it is a WHOLE NUMBER.")
           return

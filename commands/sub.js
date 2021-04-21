@@ -15,7 +15,6 @@ if(!data[message.guild.id][args[0]]) {
 	return
 }
    if(!checkLFG(message, data, args[0])) {
-      message.channel.send("You are not in the LFG channel. Please enter commands into this games' LFG.")
       return
     }
     let game  = data[message.guild.id][args[0]] 

@@ -102,7 +102,6 @@ if (!data[message.guild.id][args[0]]) {
 	return
 }
    if (!checkLFG(message, data, args[0])) {
-    message.reply(`You are not in the LFG channel. Please enter commands into <#${data[message.guild.id][args[0]]["lfg"]}>  or set the lfg channel with the ${"`qset lfg <game code>`"} into a game channel.`)
       return
   }
     if(Object.keys(data[message.guild.id]).length === 0) {

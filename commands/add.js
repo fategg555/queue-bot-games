@@ -13,18 +13,12 @@ module.exports = {
       await createNewServerInfoDoc(message.guild)
     }
 
-    // const database = require("./../util/database.js")
-    // let data = database.read();
     data = await getGuildData(message.guild.name)
 
     let game = data[message.guild.id][args[args.length - 1]]
     let gameObj = game
-    // if (!checkAllLFG(message, data)) {
-    //   message.channel.send(`You are not in a LFG channel. Please enter commands into LFG or set the lfg channel with the ${"`qset lfg <game code>`"} command into a game channel`)
-    //   return
-    // }
+    
     if (!checkManager(message)) {
-      message.channel.send("You do not have the *Game Manager* role. Either request to get the role or request someone with the role to add games.")
       return
     }
 
