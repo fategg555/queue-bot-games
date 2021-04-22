@@ -14,8 +14,8 @@ Add the bot from [here](https://discord.com/api/oauth2/authorize?client_id=51533
 
 I was lazy and didn't actually make a redirect, working on that now
 
-bot works if server members are active, if your members didn't respond to pings, this won't awake them from their hibernation
+Bot works if server members are active. If your members didn't respond to pings, this won't awake them from their hibernation
 
-enjoy and leave any comments somewhere on this github 
+Enjoy and leave any comments somewhere on this github 
 
 ( ᵔ ᴥ ᵔ )
