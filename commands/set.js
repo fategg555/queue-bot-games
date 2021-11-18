@@ -83,7 +83,7 @@ let time = Math.abs(parseInt(args[1]))
         return
       }
     } else {
-      message.channel.send("Hmmmmmm..... either the setting you're using doesn't exist yet or is invalid.")
+      message.channel.send("Hmmmmmm..... either the setting you're using doesn't exist yet or is invalid. Current settings are `qset lfg ` and `qset expiry <time>`.")
       return
     }
 	},

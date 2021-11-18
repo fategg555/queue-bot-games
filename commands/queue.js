@@ -109,26 +109,51 @@ if (!data[message.guild.id][args[0]]) {
       return
     }
 
+    let timeFormat = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
+
+    if (args.length > 1) {
+      if (!timeFormat.test(args[1])) {
+        message.reply(`Your time string in invalid. It should be in the format of ${"`HH:MM`"} of a valid time.`)
+        return
+      }
+    }
+
     let game = await getGameData()
     let mins = game["queueTimeoutMins"]
+    let timeEnd = game["queueEnd"]
     if (!game["queueTimeoutMins"]) {
       await writeToGuild(message.guild, `${args[0]}.queueTimeoutMins`, 5)
     }
+
     game = await getGameData()
     mins = game["queueTimeoutMins"]
-    
+
+    if (!game["queueEnd"]) {
+      let futureTime = new Date()
+      if (args.length > 1) {
+        let timeArray = args[1].split(":")
+        futureTime.setHours(timeArray[0])
+        futureTime.setMinutes(timeArray[1])
+      } else {
+        futureTime = futureTime.setMinutes(futureTime.getMinutes() + mins)
+      }
+      await writeToGuild(message.guild, `${args[0]}.queueEnd`, new Date(futureTime))
+    }
+
+    game = await getGameData()
+    timeEnd = game["queueEnd"]
     
     if(!game) {
       message.reply("This game does not currently exist on this server. Run **qadd** <name> <max number> <game shortcut> to create the game.")
       return   
     }
     message.channel.send(
-      `A **${game.name}** queue request has started. React to this msg above to secure a spot. This request **expires in ${game["queueTimeoutMins"]} minutes**.`
+      `A **${game.name}** queue request has started. React to this msg above to secure a spot. This request **expires at** ${"`"+new Date(game["queueEnd"]).toLocaleString().split(",")[1].slice(1)+"`"}.`
     );
     message.react("✅").then(() => message.react("❌"));
     let people = "The people being pinged:\n";
     for(let player of game.players) {
-      people += `<@${player}>`
+      people += `<@${player}>\n`
     }
    if(people.length == 25) {
 	people += "There is currently nobody subscribed to this game."
@@ -163,12 +188,12 @@ if (!data[message.guild.id][args[0]]) {
   let embed = message.channel.send({embed: viewStackEmbed})
 
     const filter = (reaction, user) => {
-      return ["✅", "❌"].includes(reaction.emoji.name) && user.tag !== "Queuey Boi#6717" ; 
+      return ["✅", "❌"].includes(reaction.emoji.name) && user.id !== process.env.TEST_BOT_ID ; 
     };
 
     const collector = message.createReactionCollector(filter, {
       max: game.stackSize + 1,
-      time: 1000*60*mins
+      time: timeEnd - new Date()
     });
 
     collector.on("collect", async(reaction, user) => {
@@ -195,10 +220,13 @@ if (!data[message.guild.id][args[0]]) {
     collector.on("end", async collected => {
       game = await getGameData()
       if(!game.stack[author]) {
-        console.log("Q is full")
+        message.reply(`It's time to play **${game.name}**! Gather your stack and get to playing!`)
         return
       }
-	await removeStack()
+      delete game["queueEnd"]
+      await writeToGuild(message.guild, `${args[0]}`, game)
+	    await removeStack()
+  
       message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
       embed.then(message => updateColor(message, 0xff2200))
       message.reply(`Your **${game.name}** queue expired. Requeue with the ${"`qq " + args[0] +"`"} command.`)

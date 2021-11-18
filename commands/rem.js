@@ -27,7 +27,7 @@ module.exports = {
 	confirmation.react("✅").then(() => {confirmation.react("❌")})
 
 	const filter = (reaction, user) => {
-		return reaction.emoji.name && (user.tag !== "Queuey Boi#6717" && user.id === message.author.id);
+		return reaction.emoji.name && (user.id !== process.env.TEST_BOT_ID && user.id === message.author.id);
 	}
 	let collector = confirmation.createReactionCollector(filter);
 		collector.on("collect", async (reaction, user) => {
