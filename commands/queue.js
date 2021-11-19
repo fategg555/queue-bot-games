@@ -221,9 +221,6 @@ if (!data[message.guild.id][args[0]]) {
       game = await getGameData()
       if(!game.stack[author]) {
         let stackPings = ""
-        for (let person of getGameStack) {
-          stackPings += `<@${person}>\n`
-        }
         message.reply(`${stackPings} It's time to play **${game.name}**! Gather your stack and get to playing!`)
         return
       }

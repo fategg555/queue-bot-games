@@ -17,6 +17,12 @@ const checkAllLFG = (message, data) => {
             console.log("<#" + message.channel.id + ">", data[message.guild.id]["lfg"])
             return true
         }
+        
+        lfgString = ""
+
+        for (let lfgChannel of data[message.guild.id]["lfgs"]) {
+            lfgChannel += `<#${lfgChannel}>`
+        }
    
         message.reply(`You are not in the LFG channel. Please enter commands into ANY LFG channel or set the lfg channel with the ${"`qset lfg <game code>`"} into a game channel.`)
         return false
