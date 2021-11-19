@@ -220,7 +220,11 @@ if (!data[message.guild.id][args[0]]) {
     collector.on("end", async collected => {
       game = await getGameData()
       if(!game.stack[author]) {
-        message.reply(`It's time to play **${game.name}**! Gather your stack and get to playing!`)
+        let stackPings = ""
+        for (let person of getGameStack) {
+          stackPings += `<@${person}>\n`
+        }
+        message.reply(`${stackPings} It's time to play **${game.name}**! Gather your stack and get to playing!`)
         return
       }
       delete game["queueEnd"]
