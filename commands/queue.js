@@ -1,4 +1,4 @@
-const {checkLFG} = require("./../util/util.js");
+const {checkLFG, checkIfServerDocExists} = require("./../util/util.js");
 const {writeToGuild, getGuildData, getUserData, createUser, updateUserData, addEmoji} = require("../util/mongo.js");
 const Discord  = require("discord.js");
 const { connect } = require("mongodb");
@@ -9,9 +9,14 @@ module.exports = {
   cooldown: 60,
   description: "looking for game command",
   params: "<game shortcut>",
-  async execute(message, args, client) { 
+  async execute(message, args, client) {
+    let data = await getGuildData(message.guild.name)
+    if (!checkIfServerDocExists(message, data)) {
+      await createNewServerInfoDoc(message.guild)
+  } 
 
   const author = message.author.id
+  let tempStack = ""
   let authordata = await getUserData(author)
   if (!authordata) {
     await createUser(author, message.guild.id)
@@ -57,6 +62,7 @@ module.exports = {
           embed.then(message => updateColor(message, 0x00ff44))
           message.reactions.removeAll().catch(error => {console.error('Failed to clear reactions: ', error)});
           console.log("after poopoobeans")
+          tempStack = game.stack[author]
           removeStack()
           return
         }
@@ -96,7 +102,7 @@ module.exports = {
     await writeToGuild(message.guild, `${args[0]}.stack`, game.stack)
   }
 
-  let data = await getGuildData(message.guild.name)
+  data = await getGuildData(message.guild.name)
 if (!data[message.guild.id][args[0]]) {
 	message.reply("This game does not exist. Please enter a valid game code.")
 	return
@@ -221,6 +227,9 @@ if (!data[message.guild.id][args[0]]) {
       game = await getGameData()
       if(!game.stack[author]) {
         let stackPings = ""
+        for (let member of tempStack) {
+          stackPings += `<@${member}>`
+        }
         message.reply(`${stackPings} It's time to play **${game.name}**! Gather your stack and get to playing!`)
         return
       }

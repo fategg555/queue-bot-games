@@ -1,5 +1,5 @@
-const {checkAllLFG} = require("./../util/util.js")
-const { writeToGuild, getGuildData } = require("../util/mongo.js");
+const {checkAllLFG, checkIfServerDocExists} = require("./../util/util.js")
+const { writeToGuild, getGuildData, createNewServerInfoDoc } = require("../util/mongo.js");
 
 module.exports = {
 	name: "view",
@@ -7,10 +7,15 @@ module.exports = {
     params: "<none>",
 	async execute(message, args) {
         let data = await getGuildData(message.guild.name)
+        if (!data) {
+            console.log("server has no data")
+            await createNewServerInfoDoc(message.guild)
+          }
 
-    if (!checkAllLFG(message, data)) {
-        return
-      }
+    data = await getGuildData(message.guild.name)
+    // if (!checkAllLFG(message, data)) {
+    //     return
+    //   }
 
     let games = Object.keys(data[message.guild.id])
     games.splice(games.indexOf("lfgs"), 1)
@@ -18,6 +23,7 @@ module.exports = {
     let gamesString = ""
     let namesString = ""
     let subListLengthString = ""
+    let lfgString = ""
 
     for (let game of games) {
         gamesString += game + "\n"
@@ -25,11 +31,13 @@ module.exports = {
 
     for (let game of games) {
         namesString += data[message.guild.id][game]["name"] + "\n"
+        lfgString += data[message.guild.id][game]["name"] + " - " + "<#" + data[message.guild.id][game]["lfg"] + ">\n"
     }
 
     for (let game of games) {
         subListLengthString += data[message.guild.id][game].stackSize + "\n"
     }
+    
 
     const viewGamesEmbed = {
         color: 0x0099ff,
@@ -41,19 +49,7 @@ module.exports = {
         //     url: 'https://discord.js.org',
         // },
         description: 'View games in the server',
-        // thumbnail: {
-        //     url: 'https://i.imgur.com/wSTFkRM.png',
-        // },
         fields: [
-            // {
-            //     name: 'Regular field title',
-            //     value: 'Some value here',
-            // },
-            // {
-            //     name: '\u200b',
-            //     value: '\u200b',
-            //     inline: false,
-            // },
             {
                 name: '**Game name**',
                 value: namesString,
@@ -69,6 +65,11 @@ module.exports = {
                 value: subListLengthString,
                 inline: true,
             },
+            {
+                name: '**LFG Channels**',
+                value: lfgString,
+                inline: true,
+            }
         ],
         // image: {
         //     url: 'https://i.imgur.com/wSTFkRM.png',

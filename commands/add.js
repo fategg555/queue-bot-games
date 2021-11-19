@@ -45,7 +45,15 @@ module.exports = {
       let gamesString = string.slice(0, string.length -1)
       resolve(gamesString)
     })
-    gameObj = {lfg: "", stackSize: args[args.length - 2], players: [], stack: {}, name: gameName}
+    gameObj = {lfg: "", stackSize: args[args.length - 2], players: [], stack: {}, name: gameName, lfg: message.channel.id}
+    if(!data["lfgs"]) {
+      await writeToGuild(message.guild, "lfgs", [])
+      server = await getGuildData(message.guild.name)
+      data = server[message.guild.id]
+    }
+    let lfgs = data["lfgs"]
+    lfgs.push(message.channel.id)
+    await writeToGuild(message.guild, "lfgs", lfgs)
     await writeToGuild(message.guild, args[args.length - 1], gameObj)
     message.reply(`The game **${gameName}** has been added with a maximum stack of ${args[args.length - 2]}. You can request a queue/group for this game with the ${"`qq "+ args[args.length - 1] +"`"} command ✅.`)
     

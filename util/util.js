@@ -18,23 +18,35 @@ const checkAllLFG = (message, data) => {
             return true
         }
         
-        lfgString = ""
 
+        let lfgString = ""
         for (let lfgChannel of data[message.guild.id]["lfgs"]) {
-            lfgChannel += `<#${lfgChannel}>`
+            lfgString += `<#${lfgChannel}>`
         }
+        if (data[message.guild.id]["lfgs"].length == 0) {
+            lfgString += "**yet to exist**"
+        }
+        console.log(lfgString)
    
-        message.reply(`You are not in the LFG channel. Please enter commands into ANY LFG channel or set the lfg channel with the ${"`qset lfg <game code>`"} into a game channel.`)
+        message.reply(`You are not in a LFG channel. Please enter commands into ${lfgString} or set the lfg channel with the ${"`qset lfg <game code>`"} into a game channel.`)
         return false
    
         
 }
 
-const checkManager = message => {
-    if (message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.some(role => role.name == "Game Manager")) {
+    const checkManager = message => {
+        if (message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.some(role => role.name == "Game Manager")) {
+            return true
+        }
+        message.reply("You don't have admin perms. Ask server owner and/or mods to give you admin perms.")
+    }
+
+    const checkIfServerDocExists = (message, data) => {
+        if (!data[message.guild.id]) {
+            return false
+        }
+
         return true
     }
-    message.reply("You don't have admin perms. Ask server owner and/or mods to give you admin perms.")
-}
 
-module.exports = { checkLFG, checkAllLFG, checkManager }
+module.exports = { checkLFG, checkAllLFG, checkManager, checkIfServerDocExists}

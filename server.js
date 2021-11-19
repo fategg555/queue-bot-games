@@ -66,7 +66,7 @@ app.get("/", (request, response) => {
 //   response.json(dreams);
 // });
 
-client.login(process.env.TEST_TOKEN)
+client.login(process.env.BOT_TOKEN)
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);

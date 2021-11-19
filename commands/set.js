@@ -1,4 +1,4 @@
-const {checkManager} = require("./../util/util.js");
+const {checkManager, checkIfServerDocExists} = require("./../util/util.js");
 const { writeToGuild, getGuildData, createNewServerInfoDoc } = require("../util/mongo.js");
 //let data = database.read()
 
@@ -7,11 +7,11 @@ module.exports = {
 	description: 'set various LFG channel',
   params: "<none>",
 	async execute(message, args) {
-//    if (args.length !== 2) {
-  //    message.channel.send("You don\'t have the right number of arguments. Make sure you have 2.")
-    //  return
-    //}
     let server = await getGuildData(message.guild.name)
+    if (!checkIfServerDocExists(message, server)) {
+      createNewServerInfoDoc(message.guild)
+    }
+    server = await getGuildData(message.guild.name)
     let data = server[message.guild.id]
     if(!data["lfgs"]) {
       await writeToGuild(message.guild, "lfgs", [])
@@ -25,10 +25,11 @@ module.exports = {
       return
     }
     
-   /* if (!data[args[1]]) {
+    if (!(data[args[1]] || data[args[2]])) {
+      console.log(data, args)
       message.reply("This game does not exist. Set an lfg for existing games.")
       return
-    }*/
+    }
 
     if (args[0] === "lfg") {
 	server = await getGuildData(message.guild.name)
